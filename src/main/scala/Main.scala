@@ -6,16 +6,31 @@ object Main {
     val c: (List[Game.Case], List[Game.Case]) = cases.splitAt(cases.size / 2)
     //c._1.zip(c._2).map(println)
     prettyPrint[Game.Case](cases, 5, List.empty)
+    println(s" Case Value in case 1: #${pickCase(1, cases).map(_.caseNumber).getOrElse("")}  ==> $$${pickCase(1, cases).map(_.caseValue).getOrElse(0)}")
+  }
 
+  def pickCase(n: Int, cases: List[Game.Case]): Option[Game.Case] = cases.find(x => x.caseNumber == n)
+
+  def caseDisplay[T](c: T): String = {
+    c match {
+      case c1: List[Game.Case] =>  s"|  ${c1.map(_.caseNumber).head}   |\t"
+      case _ => ""
+      }
   }
 
   // This doesn't work right... Not sure why. Debug output in #1 below
   def prettyPrint[T](l: List[T], m: Int, acc: List[T]): Unit = {
-    val sepString = " | "
-    //println(s"l.size ==> ${l.size}, acc.size ==> ${acc.size}")
-    if (l.size <= m) println(s"l -- ${l.mkString(sepString)}")
-    if (acc.size == m) println(s"s -- ${acc.mkString(sepString)} ")
-    prettyPrint(l filterNot(_ == l.last), m, (acc ++ List(l.last)))
+    if (l.length == 0)  return Unit
+    if (acc.size <= m) {
+      //println(s"acc.size ==> ${acc.size}, l.size ==> ${l.size}")
+      if (acc.size == m) {
+          acc.map(caseDisplay[T](_)).map(println)
+          if (l.size <= m) l.map(caseDisplay[T](_)).map(println)
+          prettyPrint(l.drop(1), m, List.empty)
+      } else {
+        prettyPrint(l.drop(1), m, acc ++ List(l.take(1)))
+      }
+    }
   }
 
   /**
