@@ -7,4 +7,7 @@ abstract class GameSpec {
     150000, 300000, 450000, 900000, 1000000, 10000000
   ) // 20 Values hard coded for now
   def init: List[Case]
+  def pickCase(n: Int, cases: List[Case]): Option[Case]
+
+  def caseDisplay[T](c: T): String
 }

@@ -8,6 +8,15 @@ object Game extends GameSpec {
     genCase()._1
   }
 
+  override def pickCase(n: Int, cases: List[Case]): Option[Case] = cases.find(x => x.caseNumber == n)
+
+  override def caseDisplay[T](c: T): String = {
+    c match {
+      case c1: List[Game.Case] =>  s"|  ${c1.map(_.caseNumber).head}   |\t"
+      case _ => ""
+    }
+  }
+
   private def flattenCasePossibilities = for {
     (e, i) <- possibleValues.zipWithIndex
   } yield Case(i, e)
